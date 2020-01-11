@@ -3,8 +3,9 @@
 }
 
 .myClass {
-  border-radius: 50%;
+  /* border-radius: 50%; */
   width: 100px;
   height: 200px;
   background-color: red;
+  /* transition: all 0.2s ease; */
 }
