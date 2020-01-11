@@ -19,12 +19,13 @@ function setupSticker(sticker) {
 
   // set the copies to be positioned absolutely
   stickerImg.style.position = 'absolute'
+  stickerShadow.style.position = 'absolute'
   stickerFlip.style.position = 'absolute'
 
   // add the copies to the container
-  sticker.appendChild(stickerFlip)
+  // sticker.appendChild(stickerFlip)
+  sticker.appendChild(stickerImg)
   sticker.appendChild(stickerShadow)
-  // sticker.appendChild(stickerImg)
 
 
   sticker.addEventListener('mouseenter', (enterE) => {
@@ -34,9 +35,7 @@ function setupSticker(sticker) {
     let mouseMove = (moveE) => {
       let currX = moveE.layerX
       let currY = moveE.layerY
-      let slope = (startY-currY)/-(startX-currX)
-      let pointX
-      let pointY
+
       let clip
 
       // find degrees
@@ -99,7 +98,6 @@ function setupSticker(sticker) {
               ${bottomWidth/sticker.offsetWidth * 100}% 100%)`
           }
         }
-        
       }else if(degrees < 0 && degrees >= Math.PI / -2) {
         let rightDist = Math.abs(xDist / Math.cos(-degrees))
         let upDist = Math.abs(yDist / Math.cos(Math.PI/2 + degrees))
@@ -129,32 +127,71 @@ function setupSticker(sticker) {
               100% 0%,
               100% 100%,
               ${bottomWidth/sticker.offsetWidth * 100}% 100%)`
-            }
+          }
+        } else {
+          let topWidth = (startX + currX) * 0.5 - (startY + currY) * 0.5 * Math.tan(-degrees)
+          if(dxRight < dyBottom) {
+            let rightHeight = (startY + currY) * 0.5 + (sticker.offsetWidth - ((startX + currX) * 0.5)) * Math.tan(Math.PI/2 + degrees)
+            clip = `polygon(
+              ${topWidth/sticker.offsetWidth * 100}% 0%,
+              100% 0%,
+              100% ${rightHeight/sticker.offsetHeight * 100}%)`
           } else {
-            let topWidth = (startX + currX) * 0.5 - (startY + currY) * 0.5 * Math.tan(-degrees)
-            if(dxRight < dyBottom) {
-              let rightHeight = (startY + currY) * 0.5 + (sticker.offsetWidth - ((startX + currX) * 0.5)) * Math.tan(Math.PI/2 + degrees)
-              clip = `polygon(
-                ${topWidth/sticker.offsetWidth * 100}% 0%,
-                100% 0%,
-                100% ${rightHeight/sticker.offsetHeight * 100}%)`
-            } else {
             let bottomWidth = (startX + currX) * 0.5 + (sticker.offsetHeight - ((startY + currY) * 0.5)) * Math.tan(-degrees)
             clip = `polygon(
               ${topWidth/sticker.offsetWidth * 100}% 0%,
               100% 0%,
               100% 100%,
               ${bottomWidth/sticker.offsetWidth * 100}% 100%)`
-            }
           }
+        }
       } else if(degrees >= Math.PI / 2 && degrees <= Math.PI) {
         let leftDist = Math.abs(xDist / Math.cos(-degrees + Math.PI))
         let downDist = Math.abs(yDist / Math.cos(degrees - Math.PI/2))
         dist = Math.min(leftDist, downDist)
         xScale = -1
 
-        pointX = sticker.offsetWidth - currX
-        pointY = currX
+        let dxLeft = Math.abs(((startX + currX) * 0.5) / Math.cos(degrees - Math.PI/2))
+        let dyBottom = Math.abs((sticker.offsetHeight - ((startY + currY) * 0.5)) / Math.cos(-degrees + Math.PI))
+
+        let dxRight = Math.abs((sticker.offsetWidth - ((startX + currX) * 0.5)) / Math.cos(degrees - Math.PI/2))
+        let dyTop = Math.abs((startY + currY) * 0.5 / Math.cos(-degrees + Math.PI))
+        
+        if(dxLeft < dyTop) {
+          let leftHeight = (startY + currY) * 0.5 - (startX + currX) * 0.5 * Math.tan(degrees - Math.PI/2)
+          if(dxRight < dyBottom) {
+            let rightHeight = (startY + currY) * 0.5 + (sticker.offsetWidth - ((startX + currX) * 0.5)) * Math.tan(degrees - Math.PI/2)
+            clip = `polygon(
+              0% ${leftHeight/sticker.offsetHeight * 100}%,
+              100% ${rightHeight/sticker.offsetHeight * 100}%,
+              100% 100%,
+              0% 100%)`
+          } else {
+            let bottomWidth = (startX + currX) * 0.5 + (sticker.offsetHeight - ((startY + currY) * 0.5)) * Math.tan(-degrees + Math.PI)
+            clip = `polygon(
+              0% ${leftHeight/sticker.offsetHeight * 100}%,
+              ${bottomWidth/sticker.offsetWidth * 100}% 100%,
+              0% 100%)`
+            }
+          } else {
+            let topWidth = (startX + currX) * 0.5 - (startY + currY) * 0.5 * Math.tan(-degrees + Math.PI)
+            if(dxRight < dyBottom) {
+              let rightHeight = (startY + currY) * 0.5 + (sticker.offsetWidth - ((startX + currX) * 0.5)) * Math.tan(degrees - Math.PI/2)
+              clip = `polygon(
+                0% 0%,
+                ${topWidth/sticker.offsetWidth * 100}% 0%,
+                100% ${rightHeight/sticker.offsetHeight * 100}%,
+                100% 100%,
+                0% 100%)`
+            } else {
+            let bottomWidth = (startX + currX) * 0.5 + (sticker.offsetHeight - ((startY + currY) * 0.5)) * Math.tan(-degrees + Math.PI)
+            clip = `polygon(
+              0% 0%,
+              ${topWidth/sticker.offsetWidth * 100}% 0%,
+              ${bottomWidth/sticker.offsetWidth * 100}% 100%,
+              0% 100%)`
+            }
+          }
 
       } else if(degrees > -Math.PI && degrees <= -Math.PI/2) {
         let leftDist = Math.abs(xDist / Math.cos(degrees + Math.PI))
@@ -163,17 +200,55 @@ function setupSticker(sticker) {
         xScale = -1
         yScale = -1
 
-        pointX = sticker.offsetWidth - currX
-        pointY = sticker.offsetHeight - currX
+        let dxLeft = Math.abs((startX + currX) * 0.5 / Math.cos(-degrees - Math.PI/2))
+        let dyBottom = Math.abs((sticker.offsetHeight - ((startY + currY) * 0.5)) / Math.cos(degrees + Math.PI))
 
+        let dxRight = Math.abs((sticker.offsetWidth - ((startX + currX) * 0.5)) / Math.cos(-degrees - Math.PI/2))
+        let dyTop = Math.abs((startY + currY) * 0.5 / Math.cos(degrees + Math.PI))
+        
+        if(dxLeft < dyBottom) {
+          let leftHeight = (startY + currY) * 0.5 + (startX + currX) * 0.5 * Math.tan(-degrees - Math.PI/2)
+          if(dxRight < dyTop) {
+            let rightHeight = (startY + currY) * 0.5 - (sticker.offsetWidth - ((startX + currX) * 0.5)) * Math.tan(-degrees - Math.PI/2)
+            clip = `polygon(
+              0% 0%,
+              100% 0%,
+              100% ${rightHeight/sticker.offsetHeight * 100}%,
+              0% ${leftHeight/sticker.offsetHeight * 100}%)`
+          } else {
+            let topWidth = (startX + currX) * 0.5 + (startY + currY) * 0.5 * Math.tan(degrees + Math.PI)
+            clip = `polygon(
+              0% 0%,
+              ${topWidth/sticker.offsetWidth * 100}% 0%,
+              0% ${leftHeight/sticker.offsetHeight * 100}%)`
+          }
+        } else {
+          let bottomWidth = (startX + currX) * 0.5 - (sticker.offsetHeight - ((startY + currY) * 0.5)) * Math.tan(degrees + Math.PI)
+          if(dxRight < dyTop) {
+            let rightHeight = (startY + currY) * 0.5 - (sticker.offsetWidth - ((startX + currX) * 0.5)) * Math.tan(-degrees - Math.PI/2)
+            clip = `polygon(
+              0% 0%,
+              100% 0%,
+              100% ${rightHeight/sticker.offsetHeight * 100}%,
+              ${bottomWidth/sticker.offsetWidth * 100}% 100%,
+              0% 100%)`
+          } else {
+            let topWidth = (startX + currX) * 0.5 + (startY + currY) * 0.5 * Math.tan(degrees + Math.PI)
+            clip = `polygon(
+              0% 0%,
+              ${topWidth/sticker.offsetWidth * 100}% 0%, 
+              ${bottomWidth/sticker.offsetWidth * 100}% 100%, 
+              0% 100%)`
+          }
+        }
       }
 
       let percent = Math.pow(Math.pow(currY - startY, 2) + Math.pow(currX - startX, 2), 0.5) / dist * 100
 
       stickerFlip.style.transform = `scale(${xScale}, ${yScale})`
       // console.log(clip)
-      sticker.style.clipPath = clip
-      stickerShadow.style.background = `linear-gradient(${radToDeg(degrees) - 90}deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0.01) ${100-percent}%,rgba(0,0,0,0.5) 100%)`
+      sticker.style.clipPath = Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > 25 ? clip : 'none'
+      stickerShadow.style.background = `linear-gradient(${radToDeg(degrees) - 90}deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0) ${100-percent}%,rgba(0,0,0,0.5) 100%)`
     }
 
     sticker.addEventListener('mousemove', mouseMove)
