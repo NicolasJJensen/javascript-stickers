@@ -7,7 +7,7 @@
   border-radius: 50%;
   width: 400px;
   height: 400px;
-  background-image: url('./reactLogo.png');
+  background-image: url('assets/reactLogo.png');
   background-size: 400px;
   /* background-color: red; */
 }
