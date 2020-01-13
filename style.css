@@ -39,12 +39,13 @@
 
 .mySticker1 {
   box-sizing: border-box;
-  border: 10px solid white;
-  border-radius: 10px;
+  /* border: 10px solid white;
+  border-radius: 10px; */
   width: 400px;
   height: 400px;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png');
-  background-size: 400px;
+  /* background-image: url('assets/reactLogo.png'); */
+  background: url('https://www.freepngimg.com/thumb/mario/20698-7-mario-transparent-background.png') no-repeat center;
+  background-size: 300px;
   /* background-color: red; */
 }
 
@@ -54,7 +55,7 @@
 
 .stickerFlip::after {
   filter: brightness(0%) invert(100%) opacity(80%);
-  background-image: var(--image);
+  background: var(--image) no-repeat center;
   background-size: var(--imgSize);
   background-color: var(--bgColor);
   position: relative;
