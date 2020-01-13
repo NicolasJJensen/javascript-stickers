@@ -9,6 +9,8 @@ function getStyle(elem, style) {
   return window.getComputedStyle(elem, null)[style]
 }
 
+let moveAmount = Math.pow(10, 2)
+
 //                                                                 //
 //                                                                 //
 //                                                                 //
@@ -38,7 +40,7 @@ function setupSticker(sticker) {
   stickerShadow.style.position = 'absolute'
   stickerFlip.style.position = 'absolute'
 
-  stickerFlip.style.transform = 'translate(-100%, -100%)'
+  stickerFlip.style.display = 'none'
   stickerFlip.style.setProperty('--image', img)
   stickerFlip.style.setProperty('--imgSize', imgSize)
   stickerFlip.style.setProperty('--bgColor', bgColor)
@@ -73,7 +75,7 @@ function setupSticker(sticker) {
       let xScale = -1
       let yScale = -1
 
-      if(degrees >= 0 && degrees < Math.PI / 2 && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > 25) {
+      if(degrees >= 0 && degrees < Math.PI / 2 && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > moveAmount) {
         let rightDist = Math.abs(xDist / Math.cos(degrees))
         let downDist = Math.abs(yDist / Math.cos(Math.PI/2 - degrees))
         dist = Math.min(rightDist, downDist)
@@ -144,7 +146,7 @@ function setupSticker(sticker) {
               stickerFlip.style.transform = `scale(${xScale}, 1) rotate(${angle2 * 2 - 90}deg)`
           }
         }
-      }else if(degrees < 0 && degrees >= Math.PI / -2 && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > 25) {
+      }else if(degrees < 0 && degrees >= Math.PI / -2 && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > moveAmount) {
         let rightDist = Math.abs(xDist / Math.cos(-degrees))
         let upDist = Math.abs(yDist / Math.cos(Math.PI/2 + degrees))
         dist = Math.min(rightDist, upDist)
@@ -214,7 +216,7 @@ function setupSticker(sticker) {
               stickerFlip.style.transform = `scale(-1, 1) rotate(${angle * 2 + 90}deg)`
           }
         }
-      } else if(degrees >= Math.PI / 2 && degrees <= Math.PI && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > 25) {
+      } else if(degrees >= Math.PI / 2 && degrees <= Math.PI && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > moveAmount) {
         let leftDist = Math.abs(xDist / Math.cos(-degrees + Math.PI))
         let downDist = Math.abs(yDist / Math.cos(degrees - Math.PI/2))
         dist = Math.min(leftDist, downDist)
@@ -284,7 +286,7 @@ function setupSticker(sticker) {
             }
           }
 
-      } else if(degrees > -Math.PI && degrees <= -Math.PI/2 && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > 25) {
+      } else if(degrees > -Math.PI && degrees <= -Math.PI/2 && Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > moveAmount) {
         let leftDist = Math.abs(xDist / Math.cos(degrees + Math.PI))
         let upDist = Math.abs(yDist / Math.cos(-degrees - Math.PI/2))
         dist = Math.min(leftDist, upDist)
@@ -356,11 +358,12 @@ function setupSticker(sticker) {
 
       let percent = Math.pow(Math.pow(currY - startY, 2) + Math.pow(currX - startX, 2), 0.5) / dist * 100
 
-      // stickerFlip.style.transformOrigin = `deg`
-      // stickerFlip.style.transform = `scale(${xScale}, ${yScale}) rotate(${angle * 2}deg) translateY(${})`
-      // console.log(clip)
-      sticker.style.clipPath = Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > 25 ? clip : 'none'
-      // stickerShadow.style.background = `linear-gradient(${radToDeg(degrees) - 90}deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0) ${100-percent}%,rgba(0,0,0,0.5) 100%)`
+      if(Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > moveAmount) {
+        stickerFlip.style.display = 'block'
+      } else {
+        stickerFlip.style.display = 'none'
+      }
+      sticker.style.clipPath = Math.pow(currX - startX, 2) + Math.pow(currY - startY, 2) > moveAmount ? clip : 'none'
     }
 
     document.addEventListener('mousemove', mouseMove)
@@ -368,8 +371,7 @@ function setupSticker(sticker) {
     sticker.addEventListener('mouseup', () => {
       document.removeEventListener('mousemove', mouseMove)
       sticker.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 100% 0%)'
-      stickerFlip.style.transform = 'translate(-100%, -100%)'
-      // cleanup animation
+      stickerFlip.style.display = 'none'
       stickerShadow.style.background = 'none'
     }, {once : true})
   })

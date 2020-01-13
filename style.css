@@ -1,19 +1,27 @@
 .sticker {
+  cursor: pointer;
+}
+
+.myContainer {
+  position: relative;
+  top: 300px;
+  left: 300px;
 }
 
 .myClass {
   box-sizing: border-box;
-  /* border: 10px solid white; */
+  border: 10px solid white;
   border-radius: 50%;
   width: 400px;
   height: 400px;
   background-image: url('./reactLogo.png');
-  background-size: 400px;
+  background-size: 380px;
   /* background-color: red; */
 }
 
 .stickerFlip {
   overflow: hidden;
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.15));
 }
 
 .stickerFlip::after {
