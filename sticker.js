@@ -15,6 +15,7 @@ function setupSticker(sticker) {
   sticker.style.position = 'relative'
   sticker.style.backgroundImage = 'none'
   sticker.style.backgroundColor = 'initial'
+  sticker.style.border = 'none'
 
   // set the copies to be positioned absolutely
   stickerImg.style.position = 'absolute'
@@ -106,14 +107,8 @@ function setupSticker(sticker) {
               0% 100%,
               ${bottomWidth/xDist * 100}% 100%)`
 
-              //
-              //
-              //
-              stickerFlip.style.transformOrigin = `${bottomWidth/2}px ${rightHeight/2}px`
-              stickerFlip.style.transform = `scale(${xScale}, ${yScale}) rotate(${angle * 2 + 90}deg)`
-              //
-              //
-              //
+              stickerFlip.style.transformOrigin = `${xDist - (xDist - bottomWidth)/2}px ${yDist - (yDist - rightHeight)/2}px`
+              stickerFlip.style.transform = `scale(1, -1) rotate(${angle2 * 2 + 90}deg)`
           } else {
             let topWidth = (startX + currX) * 0.5 + (startY + currY) * 0.5 * Math.tan(degrees)
             clip = `polygon(
@@ -151,8 +146,10 @@ function setupSticker(sticker) {
             let rightHeight = (startY + currY) * 0.5 + (xDist - ((startX + currX) * 0.5)) * Math.tan(Math.PI/2 + degrees)
             clip = `polygon(
               0% ${leftHeight/yDist * 100}%,
-              0% -100%,
-              100% 0%,
+              0% ${-cornerDist}px,
+              ${xDist + cornerDist}px ${-cornerDist}px,
+              ${xDist + cornerDist}px 100%,
+              100% 100%,
               100% ${rightHeight/yDist * 100}%)`
 
               stickerFlip.style.transformOrigin = `50% ${(leftHeight + rightHeight)/2}px`
@@ -161,9 +158,9 @@ function setupSticker(sticker) {
             let bottomWidth = (startX + currX) * 0.5 + (yDist - ((startY + currY) * 0.5)) * Math.tan(-degrees)
             clip = `polygon(
               0% ${leftHeight/yDist * 100}%,
-              0% 0%,
-              100% 0%,
-              100% 100%,
+              0% ${-cornerDist}px,
+              ${cornerDist}px ${-cornerDist}px,
+              ${cornerDist}px 100%,
               ${bottomWidth/xDist * 100}% 100%)`
 
               stickerFlip.style.transformOrigin = `${bottomWidth/2}px ${yDist - (yDist - leftHeight)/2}px`
@@ -175,14 +172,22 @@ function setupSticker(sticker) {
             let rightHeight = (startY + currY) * 0.5 + (xDist - ((startX + currX) * 0.5)) * Math.tan(Math.PI/2 + degrees)
             clip = `polygon(
               ${topWidth/xDist * 100}% 0%,
-              100% 0%,
+              0% 0%,
+              0% ${-cornerDist}px,
+              ${xDist + cornerDist}px ${-cornerDist}px,
+              ${xDist + cornerDist}px 100%,
+              100% 100%,
               100% ${rightHeight/yDist * 100}%)`
+              
+              stickerFlip.style.transformOrigin = `${topWidth + (xDist - topWidth)/2}px ${(yDist - (yDist - rightHeight))/2}px`
+              stickerFlip.style.transform = `scale(-1, 1) rotate(${angle * 2 + 90}deg)`
           } else {
             let bottomWidth = (startX + currX) * 0.5 + (yDist - ((startY + currY) * 0.5)) * Math.tan(-degrees)
             clip = `polygon(
               ${topWidth/xDist * 100}% 0%,
-              100% 0%,
-              100% 100%,
+              ${topWidth/xDist * 100}% ${-cornerDist}px,
+              ${xDist + cornerDist}px ${-cornerDist}px,
+              ${xDist + cornerDist}px 100%,
               ${bottomWidth/xDist * 100}% 100%)`
 
               stickerFlip.style.transformOrigin = `${(bottomWidth + topWidth)/2}px 50%`
