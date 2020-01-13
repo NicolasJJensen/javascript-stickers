@@ -9,18 +9,41 @@
 
 .centerBox {
   display: flex;
+  flex-direction: column;
   align-content: center;
   justify-content: center;
-  margin:  40px;
+  height: 100vh;
+  margin: auto;
 }
 
-.myClass {
+.formBox {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.button {
+  background-color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: 0.4s;
+}
+
+.button:hover {
+  background-color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+}
+
+.mySticker1 {
   box-sizing: border-box;
-  /* border: 10px solid white; */
-  border-radius: 50%;
+  border: 10px solid white;
+  border-radius: 10px;
   width: 400px;
   height: 400px;
-  background-image: url('https://i.pinimg.com/originals/25/b9/24/25b924f1d18fea2c7dfcb26a9905c1e8.png');
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png');
   background-size: 400px;
   /* background-color: red; */
 }
@@ -43,5 +66,13 @@
 }
 
 body {
-  background-color: var(--Lightorange);
+  background-color: #ff6058e7;
+}
+
+html {
+  background: url("assets/background.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
