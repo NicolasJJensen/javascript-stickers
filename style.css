@@ -1,4 +1,17 @@
-.sticker {
+:root {
+  --orange: #ff5f58;
+  --Lightorange: #ff918b;
+}
+
+.orange {
+  color: var(--orange)!important;
+}
+
+.centerBox {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin:  40px;
 }
 
 .myClass {
@@ -7,7 +20,7 @@
   border-radius: 50%;
   width: 400px;
   height: 400px;
-  background-image: url('assets/reactLogo.png');
+  background-image: url('https://i.pinimg.com/originals/25/b9/24/25b924f1d18fea2c7dfcb26a9905c1e8.png');
   background-size: 400px;
   /* background-color: red; */
 }
@@ -30,5 +43,5 @@
 }
 
 body {
-  background-color: whitesmoke;
+  background-color: var(--Lightorange);
 }
