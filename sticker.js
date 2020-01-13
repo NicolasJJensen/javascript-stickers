@@ -13,7 +13,6 @@ function setupSticker(sticker) {
 
   // alter original sticker to just be a container
   sticker.style.position = 'relative'
-  sticker.style.overflow = 'hidden'
   sticker.style.backgroundImage = 'none'
   sticker.style.backgroundColor = 'initial'
 
@@ -21,7 +20,8 @@ function setupSticker(sticker) {
   stickerImg.style.position = 'absolute'
   stickerShadow.style.position = 'absolute'
   stickerFlip.style.position = 'absolute'
-  // stickerFlip.style.transform = 'translate(-100%, -100%)'
+  stickerFlip.style.transform = 'translate(-100%, -100%)'
+  sticker.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 100% 0%)'
   stickerFlip.classList.add('stickerFlip')
 
   // add the copies to the container
@@ -30,7 +30,7 @@ function setupSticker(sticker) {
   sticker.appendChild(stickerFlip)
 
 
-  sticker.addEventListener('mouseenter', (enterE) => {
+  sticker.addEventListener('mousedown', (enterE) => {
     let startX = enterE.layerX
     let startY = enterE.layerY
 
@@ -47,6 +47,7 @@ function setupSticker(sticker) {
       // find distance to edge
       let yDist = Math.abs(sticker.offsetHeight)
       let xDist = Math.abs(sticker.offsetWidth)
+      let cornerDist = Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), 0.5)
       let dist
       let xScale = -1
       let yScale = -1
@@ -56,14 +57,8 @@ function setupSticker(sticker) {
         let downDist = Math.abs(yDist / Math.cos(Math.PI/2 - degrees))
         dist = Math.min(rightDist, downDist)
 
-        // stickerShadow.style.background = `linear-gradient(
-        //   ${radToDeg(degrees) + 90}deg,
-        //   rgba(0, 0, 0, 0.7) ${Math.pow(Math.pow((startX + currX) * 0.5, 2) + Math.pow((startY + currY) * 0.5, 2), 0.5) * 0.5}px,
-        //   rgba(0, 0, 0, 0) ${Math.pow(Math.pow((startX + currX) * 0.5, 2) + Math.pow((startY + currY) * 0.5, 2), 0.5) * 2}px)`
-
         let angle = radToDeg(degrees)-45
         let angle2 = -radToDeg(degrees)+45
-        // console.log(angle)
 
         let dxLeft = Math.abs((startX + currX) * 0.5 / Math.cos(-degrees + Math.PI/2))
         let dyBottom = Math.abs((yDist - ((startY + currY) * 0.5)) / Math.cos(degrees))
@@ -78,9 +73,10 @@ function setupSticker(sticker) {
             clip = `polygon(
               0% ${leftHeight/yDist * 100}%,
               100% ${rightHeight/yDist * 100}%,
-              100% ${rightHeight/yDist * 100}%,
-              100% 100%,
-              0% 100%)`
+              100% 0%,
+              ${cornerDist * 2}px 0%,
+              ${cornerDist * 2}px ${cornerDist * 2}px,
+              0% ${cornerDist * 2}px)`
 
               stickerFlip.style.transformOrigin = `50% ${(rightHeight + leftHeight)/2}px`
               stickerFlip.style.transform = `scale(1, ${yScale}) rotate(${angle2 * 2 + 90}deg)`
@@ -89,9 +85,9 @@ function setupSticker(sticker) {
             clip = `polygon(
               0% ${leftHeight/yDist * 100}%,
               ${topWidth/xDist * 100}% 0%,
-              100% 0%,
-              100% 100%,
-              0% 100%)`
+              ${cornerDist * 2}px 0%,
+              ${cornerDist * 2}px ${cornerDist * 2}px,
+              0% ${cornerDist * 2}px)`
 
             stickerFlip.style.transformOrigin = `${topWidth/2}px ${leftHeight/2}px`
             stickerFlip.style.transform = `scale(1, ${yScale}) rotate(${angle2 * 2 + 90}deg)`
@@ -103,19 +99,30 @@ function setupSticker(sticker) {
             clip = `polygon(
               ${bottomWidth/xDist * 100}% 100%,
               100% ${rightHeight/yDist * 100}%,
-              100% ${rightHeight/yDist * 100}%,
-              100% 100%,
+              100% 0%,
+              ${cornerDist * 2}px 0%,
+              ${cornerDist * 2}px ${cornerDist * 2}px,
+              0% ${cornerDist * 2}px,
+              0% 100%,
               ${bottomWidth/xDist * 100}% 100%)`
 
+              //
+              //
+              //
               stickerFlip.style.transformOrigin = `${bottomWidth/2}px ${rightHeight/2}px`
               stickerFlip.style.transform = `scale(${xScale}, ${yScale}) rotate(${angle * 2 + 90}deg)`
+              //
+              //
+              //
           } else {
             let topWidth = (startX + currX) * 0.5 + (startY + currY) * 0.5 * Math.tan(degrees)
             clip = `polygon(
               ${bottomWidth/xDist * 100}% 100%, 
               ${topWidth/xDist * 100}% 0%, 
-              100% 0%, 
-              100% 100%,
+              ${cornerDist * 2}px 0%, 
+              ${cornerDist * 2}px ${cornerDist * 2}px,
+              0% ${cornerDist * 2}px,
+              0% 100%,
               ${bottomWidth/xDist * 100}% 100%)`
 
               stickerFlip.style.transformOrigin = `${(topWidth + bottomWidth)/2}px 50%`
@@ -144,7 +151,7 @@ function setupSticker(sticker) {
             let rightHeight = (startY + currY) * 0.5 + (xDist - ((startX + currX) * 0.5)) * Math.tan(Math.PI/2 + degrees)
             clip = `polygon(
               0% ${leftHeight/yDist * 100}%,
-              0% 0%,
+              0% -100%,
               100% 0%,
               100% ${rightHeight/yDist * 100}%)`
 
@@ -215,6 +222,9 @@ function setupSticker(sticker) {
               0% ${leftHeight/yDist * 100}%,
               ${bottomWidth/xDist * 100}% 100%,
               0% 100%)`
+
+              stickerFlip.style.transformOrigin = `${bottomWidth/2}px ${leftHeight/2}px`
+              stickerFlip.style.transform = `scale(1, -1) rotate(${angle * 2 + 90}deg)`
             }
           } else {
             let topWidth = (startX + currX) * 0.5 - (startY + currY) * 0.5 * Math.tan(-degrees + Math.PI)
@@ -312,11 +322,12 @@ function setupSticker(sticker) {
       // stickerShadow.style.background = `linear-gradient(${radToDeg(degrees) - 90}deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0) ${100-percent}%,rgba(0,0,0,0.5) 100%)`
     }
 
-    sticker.addEventListener('mousemove', mouseMove)
+    document.addEventListener('mousemove', mouseMove)
   
-    sticker.addEventListener('mouseleave', () => {
-      sticker.removeEventListener('mousemove', mouseMove)
+    sticker.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', mouseMove)
       sticker.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 100% 0%)'
+      stickerFlip.style.transform = 'translate(-100%, -100%)'
       // cleanup animation
       stickerShadow.style.background = 'none'
     }, {once : true})

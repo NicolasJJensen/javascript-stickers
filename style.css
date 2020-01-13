@@ -11,7 +11,7 @@
 }
 
 .stickerFlip {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .stickerFlip::after {
