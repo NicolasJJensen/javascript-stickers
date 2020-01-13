@@ -1,9 +1,13 @@
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
   let stickers = Array.from(document.getElementsByClassName('sticker'))
   stickers.forEach(sticker => {
     setupSticker(sticker)
   })
 })
+
+function getStyle(elem, style) {
+  return window.getComputedStyle(elem, null)[style]
+}
 
 //                                                                 //
 //                                                                 //
@@ -19,6 +23,10 @@ function setupSticker(sticker) {
   let stickerShadow = sticker.cloneNode(true)
   let stickerImg = sticker.cloneNode(true)
 
+  let img = getStyle(sticker, 'backgroundImage')
+  let imgSize = getStyle(sticker, 'backgroundSize')
+  let bgColor = getStyle(sticker, 'backgroundColor')
+
   // alter original sticker to just be a container
   sticker.style.position = 'relative'
   sticker.style.backgroundImage = 'none'
@@ -29,7 +37,11 @@ function setupSticker(sticker) {
   stickerImg.style.position = 'absolute'
   stickerShadow.style.position = 'absolute'
   stickerFlip.style.position = 'absolute'
+
   stickerFlip.style.transform = 'translate(-100%, -100%)'
+  stickerFlip.style.setProperty('--image', img)
+  stickerFlip.style.setProperty('--imgSize', imgSize)
+  stickerFlip.style.setProperty('--bgColor', bgColor)
   sticker.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 100% 0%)'
   stickerFlip.classList.add('stickerFlip')
 
