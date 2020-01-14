@@ -6,6 +6,10 @@
   --Lightorange: #ff918b;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .orange {
   color: var(--orange)!important;
 }
