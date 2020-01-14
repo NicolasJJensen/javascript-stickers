@@ -1,21 +1,54 @@
 .sticker {
   cursor: pointer;
 }
-
-.myContainer {
-  position: relative;
-  top: 300px;
-  left: 300px;
+:root {
+  --orange: #ff5f58;
+  --Lightorange: #ff918b;
 }
 
-.myClass {
+.orange {
+  color: var(--orange)!important;
+}
+
+.centerBox {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 100vh;
+  margin: auto;
+}
+
+.formBox {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.button {
+  background-color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: 0.4s;
+}
+
+.button:hover {
+  background-color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+}
+
+.mySticker1 {
   box-sizing: border-box;
-  border: 10px solid white;
-  border-radius: 50%;
+  /* border: 10px solid white;
+  border-radius: 10px; */
   width: 400px;
   height: 400px;
-  background-image: url('./reactLogo.png');
-  background-size: 380px;
+  /* background-image: url('assets/reactLogo.png'); */
+  background: url('https://www.freepngimg.com/thumb/mario/20698-7-mario-transparent-background.png') no-repeat center;
+  background-size: 300px;
   /* background-color: red; */
 }
 
@@ -26,7 +59,7 @@
 
 .stickerFlip::after {
   filter: brightness(0%) invert(100%) opacity(80%);
-  background-image: var(--image);
+  background: var(--image) no-repeat center;
   background-size: var(--imgSize);
   background-color: var(--bgColor);
   position: relative;
@@ -38,5 +71,13 @@
 }
 
 body {
-  background-color: whitesmoke;
+  background-color: #ff6058e7;
+}
+
+html {
+  background: url("assets/background.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }

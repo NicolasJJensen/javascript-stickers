@@ -1,18 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel='stylesheet' href='./style.css' >
-    <script src='./sticker.js'></script>
-    <title>Sticker</title>
+    <!-- Javascript Stickers created by Nicolas Jensen & Alex Leybourne 2020 -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Javascript Stickers</title>
+
+    <!-- Favicon -->
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicon/site.webmanifest" />
+
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="uiKit/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="uiKit/uikit.min.js"></script>
+    <script src="uiKit/uikit-icons.min.js"></script>
+
+    <!-- Rubik Font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Rubik:400,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./style.css" />
+
+    <script src="./sticker.js"></script>
   </head>
 
   <body>
-    <div class='myContainer'>
-      <div class='sticker myClass'></div>
+    <div style="position: fixed; width: 100vw; height: 40px;">
+      <nav class="uk-navbar-container uk-margin" uk-navbar>
+        <div class="uk-navbar-center">
+          <div class="uk-navbar-center-left">
+            <div>
+              <ul class="uk-navbar-nav">
+                <li class="uk-active">
+                  <a class="orange" href="#">documentation</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <a class="uk-navbar-item uk-logo orange" href=""
+            >Javascript Stickers &nbsp;
+            <img
+              src="assets/javascript-stickers-logo.svg"
+              height="25px"
+              width="25px"
+          /></a>
+          <div class="uk-navbar-center-right">
+            <div>
+              <ul class="uk-navbar-nav orange">
+                <li><a class="orange" href="#">examples</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
+    <br /><br />
+
+    <div class="centerBox">
+      <div style="align-self: center;" class="sticker mySticker1"></div>
+
+      <br />
+      <h2 style="align-self: center; color: white;">Enter a image url:</h2>
+
+      <div class="formBox">
+        <form style="align-self: center;">
+          <div class="uk-margin">
+            <div class="uk-inline">
+              <a
+                class="uk-form-icon uk-form-icon-flip"
+                href="#"
+                uk-icon="icon: link"
+              ></a>
+              <input
+                class="uk-input"
+                style="border-radius: 10px;"
+                type="text"
+              />
+            </div>
+            <button
+              class="uk-button uk-button-default button"
+              onclick="updateSticker()"
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- <div class='sticker myClass'></div> -->
   </body>
 </html>

@@ -58,8 +58,8 @@ function setupSticker(sticker) {
     let startY = enterE.layerY
 
     let mouseMove = (moveE) => {
-      let currX = moveE.layerX
-      let currY = moveE.layerY
+      let currX = moveE.x - sticker.getBoundingClientRect().left
+      let currY = moveE.y - sticker.getBoundingClientRect().top
 
       let clip
 
@@ -368,7 +368,7 @@ function setupSticker(sticker) {
 
     document.addEventListener('mousemove', mouseMove)
   
-    sticker.addEventListener('mouseup', () => {
+    document.addEventListener('mouseup', () => {
       document.removeEventListener('mousemove', mouseMove)
       sticker.style.clipPath = 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 100% 0%)'
       stickerFlip.style.display = 'none'
